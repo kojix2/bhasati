@@ -3,20 +3,18 @@ require 'oauth2'
 def create_auth_url(conf)
   client = OAuth2::Client.new(conf['app']['client_id'],
                               conf['app']['client_secret'],
-                              :site => conf['user']['base_url'])
+                              site: conf['user']['base_url'])
 
-  url = client.auth_code.authorize_url(:redirect_uri => 'urn:ietf:wg:oauth:2.0:oob',
-                                       :scope => 'read write follow')
-  return url
+  client.auth_code.authorize_url(redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+                                 scope: 'read write follow')
 end
 
 def get_access_token(conf, code)
   client = OAuth2::Client.new(conf['app']['client_id'],
                               conf['app']['client_secret'],
-                              :site => conf['user']['base_url'])
+                              site: conf['user']['base_url'])
   token = client.auth_code.get_token(code,
-                                     :redirect_uri => 'urn:ietf:wg:oauth:2.0:oob',
-                                     :scope => 'read write follow')
+                                     redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+                                     scope: 'read write follow')
   conf['user']['access_token'] = token.token
 end
-

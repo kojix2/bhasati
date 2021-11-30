@@ -6,16 +6,16 @@ class AppConf
   end
 
   def load
-    if File.exists?(@path)
+    if File.exist?(@path)
       TOML.load_file(@path)
     else
-      {"app" => {},
-       "user" => {}}
-    end    
+      { 'app' => {},
+        'user' => {} }
+    end
   end
 
   def save(conf)
-    File.open(@path, "w") do |f|
+    File.open(@path, 'w') do |f|
       f.puts TOML::Generator.new(conf).body
     end
   end
